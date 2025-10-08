@@ -11,7 +11,6 @@ export function quadradoComFor(numeros: any): number[] {
 
         resultado.push(numeros[i] ** 2);
     }
-    
     return resultado;
 }
 
@@ -20,9 +19,3 @@ export function quadradoComForEach(numeros: number[]): number[] {
   numeros.forEach((num) => resultado.push(num ** 2));
   return resultado;
 }
-
-const numerosTeste = [3, 5, 7, 3, 8, 9, 1];
-
-console.log("Array original:", numerosTeste);
-console.log("Quadrado com for simples:", quadradoComFor(numerosTeste));
-console.log("Quadrado com forEach:", quadradoComForEach(numerosTeste));
