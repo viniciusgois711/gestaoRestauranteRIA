@@ -10,7 +10,7 @@ interface Calculavel {
   calcular(): number;
 }
 
-class Funcionario implements Calculavel {
+export class Funcionario implements Calculavel {
   nome: string;
   salarioBase: number;
   bonus: number;
@@ -26,7 +26,7 @@ class Funcionario implements Calculavel {
   }
 }
 
-class Produto implements Calculavel {
+export class Produto implements Calculavel {
   nome: string;
   precoUnitario: number;
   quantidade: number;
@@ -41,15 +41,3 @@ class Produto implements Calculavel {
     return this.precoUnitario * this.quantidade;
   }
 }
-
-const funcionario1 = new Funcionario("Lucas", 2000, 500);
-const produto1 = new Produto("Notebook", 3500, 3);
-
-console.log("Salário total do funcionário:", funcionario1.calcular());
-console.log("Valor total do produto em estoque:", produto1.calcular());
-
-funcionario1.bonus = 800;
-produto1.quantidade = 5;
-
-console.log("Novo salário total do funcionário:", funcionario1.calcular());
-console.log("Novo valor total do produto em estoque:", produto1.calcular());
