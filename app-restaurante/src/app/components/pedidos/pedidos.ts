@@ -29,7 +29,7 @@ export class Pedidos implements OnInit {
 
   username = ''
   visible = false
-
+  visualizando = false
 
   ngOnInit() {
     this.carregaPedidos()
@@ -43,22 +43,51 @@ export class Pedidos implements OnInit {
     ]
   }
 
-  adicionarPedido(){
-    console.log('adicionou')
+  postPutPedido() {
 
-    console.log(this.username)
-    console.log(this.pedidos.length)
-    console.log(this.pedidos.lenght +1)
-    this.pedidos.push({...this.novoPedido, id: this.pedidos.length +1 })
-    console.log(this.novoPedido)
+    this.visualizando = false
+
+    if (this.novoPedido.id !== 0) {
+      const index = this.pedidos.findIndex((p:any) => p.id === this.novoPedido.id);
+      if (index !== -1) {
+        this.pedidos[index] = { ...this.novoPedido };
+      }
+    } 
+    else {
+      const novoId = this.pedidos.length > 0 ? this.pedidos[this.pedidos.length - 1].id + 1 : 1;
+      this.pedidos.push({ ...this.novoPedido, id: novoId });
+    }
+
+    this.novoPedido = {
+      id: 0,
+      cliente: '',
+      produto: '',
+      quantidade: 1,
+      status: 'Preparando'
+    };
+    this.visible = false; 
   }
 
-  editarPedido(pedido:any){
-    console.log('editou', pedido)
+  abrirEditarPedido(pedido:any){
+    this.novoPedido = {...pedido}
+    this.visible = true
+    this.visualizando = false
   }
 
   deletarPedido(pedido:any){
-    console.log('deletou', pedido)
+    this.pedidos = this.pedidos.filter((p:any) => p.id !== pedido.id)
+  }
+
+  visualizarPedido(pedido:any){
+    console.log('visualiza')
+    this.novoPedido = {...pedido}
+    this.visualizando = true
+    this.visible = true
+  }
+
+  abrirModal(){
+    this.visible = true
+    this.visualizando = false
   }
 
 }
