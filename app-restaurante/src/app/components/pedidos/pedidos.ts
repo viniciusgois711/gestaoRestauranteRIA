@@ -17,7 +17,7 @@ import { FormsModule } from '@angular/forms';
 export class Pedidos implements OnInit {
 
   pedidos: any = []  
-  displayModal: boolean = false; // controla visibilidade do modal
+  displayModal: boolean = false;
 
   novoPedido = {
     id: 0,
@@ -86,6 +86,13 @@ export class Pedidos implements OnInit {
   }
 
   abrirModal(){
+    this.novoPedido = {
+      id: 0,
+      cliente: '',
+      produto: '',
+      quantidade: 1,
+      status: 'Preparando'
+    };
     this.visible = true
     this.visualizando = false
   }
