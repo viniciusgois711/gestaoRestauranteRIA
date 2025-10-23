@@ -1,0 +1,137 @@
+<div class="p-6 bg-gray-50 min-h-screen">
+  <h1 class="text-2xl font-bold mb-6 text-gray-800">Pedidos</h1>
+
+  <!-- Botão para abrir modal -->
+  <div class="flex justify-end mb-6">
+    <p-button 
+      label="Adicionar Pedido" 
+      icon="pi pi-plus" 
+      (click)="abrirModal()" 
+      class="!bg-blue-500 !border-none hover:!bg-blue-600 transition-all duration-200 shadow-md"
+    ></p-button>
+  </div>
+
+  <!-- Modal -->
+  <p-dialog 
+    header="Gerenciar Pedido" 
+    [modal]="true" 
+    [(visible)]="visible" 
+    [style]="{ width: '30rem' }"
+    [draggable]="false"
+  >
+    <span class="text-gray-500 block mb-6">Preencha os dados do pedido.</span>
+
+    <div class="space-y-4">
+      <!-- Campo Cliente -->
+      <div class="flex items-center gap-3">
+        <label for="cliente" class="font-medium w-28 text-gray-700">Cliente</label>
+        <input 
+          pInputText 
+          id="cliente" 
+          [(ngModel)]="novoPedido.cliente" 
+          class="flex-1" 
+          autocomplete="off" 
+          [disabled]="visualizando" 
+        />
+      </div>
+
+      <!-- Campo Produto -->
+      <div class="flex items-center gap-3">
+        <label for="produto" class="font-medium w-28 text-gray-700">Produto</label>
+        <input 
+          pInputText 
+          id="produto" 
+          [(ngModel)]="novoPedido.produto" 
+          class="flex-1" 
+          autocomplete="off" 
+          [disabled]="visualizando" 
+        />
+      </div>
+
+      <!-- Campo Quantidade -->
+      <div class="flex items-center gap-3">
+        <label for="quantidade" class="font-medium w-28 text-gray-700">Quantidade</label>
+        <input 
+          pInputText 
+          id="quantidade" 
+          [(ngModel)]="novoPedido.quantidade" 
+          class="flex-1" 
+          autocomplete="off" 
+          [disabled]="visualizando" 
+        />
+      </div>
+
+      <!-- Campo Status -->
+      <div class="flex items-center gap-3">
+        <label for="status" class="font-medium w-28 text-gray-700">Status</label>
+        <input 
+          pInputText 
+          id="status" 
+          [(ngModel)]="novoPedido.status" 
+          class="flex-1" 
+          autocomplete="off" 
+          [disabled]="visualizando" 
+        />
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-3 mt-6">
+      <p-button 
+        label="Cancelar" 
+        severity="secondary" 
+        (click)="visible = false"
+        class="!bg-gray-300 !text-gray-800 hover:!bg-gray-400 transition-all duration-200"
+      />
+      <p-button 
+        label="Salvar" 
+        (click)="postPutPedido()" 
+        class="!bg-green-500 hover:!bg-green-600 transition-all duration-200"
+      />
+    </div>
+  </p-dialog>
+
+  <!-- Tabela -->
+  <div class="bg-white rounded-xl shadow-md overflow-hidden">
+    <p-table [value]="pedidos">
+      <ng-template #header>
+        <tr class="bg-gray-100 text-gray-700 text-sm uppercase">
+          <th class="px-4 py-3">ID</th>
+          <th class="px-4 py-3">Cliente</th>
+          <th class="px-4 py-3">Produto</th>
+          <th class="px-4 py-3">Quantidade</th>
+          <th class="px-4 py-3">Status</th>
+          <th class="px-4 py-3 text-center">Ações</th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-pedido>
+        <tr class="border-b hover:bg-gray-50 transition">
+          <td class="px-4 py-3">{{ pedido.id }}</td>
+          <td class="px-4 py-3">{{ pedido.cliente }}</td>
+          <td class="px-4 py-3">{{ pedido.produto }}</td>
+          <td class="px-4 py-3">{{ pedido.quantidade }}</td>
+          <td class="px-4 py-3">{{ pedido.status }}</td>
+          <td class="px-4 py-3 flex justify-center gap-2">
+            <p-button  
+              label="Visualizar"
+              class="p-button-rounded p-button-text p-button-info hover:scale-110 transition-transform" 
+              (click)="visualizarPedido(pedido)">
+            </p-button>
+
+            <p-button 
+              label="Editar"
+              class="p-button-rounded p-button-text p-button-warning hover:scale-110 transition-transform" 
+              (click)="abrirEditarPedido(pedido)">
+            </p-button>
+
+            <p-button 
+              label="Deletar"
+              class="p-button-rounded p-button-text p-button-danger hover:scale-110 transition-transform" 
+              (click)="deletarPedido(pedido)">
+            </p-button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
