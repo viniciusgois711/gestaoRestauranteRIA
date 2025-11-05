@@ -7,10 +7,11 @@ import { ButtonModule } from 'primeng/button';         // <p-button>
 import { InputTextModule } from 'primeng/inputtext';   // <input pInputText>
 import { InputNumberModule } from 'primeng/inputnumber'; // <p-inputNumber>
 import { FormsModule } from '@angular/forms';
+import { PedidosList } from './pedidos-list/pedidos-list';
 
 @Component({
   selector: 'app-pedidos',
-  imports: [TableModule, DialogModule, ButtonModule, InputTextModule, InputNumberModule, FormsModule],
+  imports: [TableModule, DialogModule, ButtonModule, InputTextModule, InputNumberModule, FormsModule, PedidosList],
   templateUrl: './pedidos.html',
   styleUrl: './pedidos.css'
 })
