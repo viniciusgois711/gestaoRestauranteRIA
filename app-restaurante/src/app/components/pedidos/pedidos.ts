@@ -45,31 +45,6 @@ export class Pedidos implements OnInit {
     ]
   }
 
-  postPutPedido() {
-
-    this.visualizando = false
-
-    if (this.novoPedido.id !== 0) {
-      const index = this.pedidos.findIndex((p:any) => p.id === this.novoPedido.id);
-      if (index !== -1) {
-        this.pedidos[index] = { ...this.novoPedido };
-      }
-    } 
-    else {
-      const novoId = this.pedidos.length > 0 ? this.pedidos[this.pedidos.length - 1].id + 1 : 1;
-      this.pedidos.push({ ...this.novoPedido, id: novoId });
-    }
-
-    this.novoPedido = {
-      id: 0,
-      cliente: '',
-      produto: '',
-      quantidade: 1,
-      status: 'Preparando'
-    };
-    this.visible = false; 
-  }
-
   abrirEditarPedido(pedido:any){
     this.novoPedido = {...pedido}
     this.visible = true
