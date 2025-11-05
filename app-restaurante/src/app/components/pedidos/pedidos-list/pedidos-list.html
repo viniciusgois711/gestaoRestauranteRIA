@@ -1,0 +1,44 @@
+  <!-- Tabela -->
+  <div class="bg-white rounded-xl shadow-md overflow-hidden">
+    <p-table [value]="pedidos">
+      <ng-template #header>
+        <tr class="bg-gray-100 text-gray-700 text-sm uppercase">
+          <th class="px-4 py-3">ID</th>
+          <th class="px-4 py-3">Cliente</th>
+          <th class="px-4 py-3">Produto</th>
+          <th class="px-4 py-3">Quantidade</th>
+          <th class="px-4 py-3">Status</th>
+          <th class="px-4 py-3 text-center">Ações</th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-pedido>
+        <tr class="border-b hover:bg-gray-50 transition">
+          <td class="px-4 py-3">{{ pedido.id }}</td>
+          <td class="px-4 py-3">{{ pedido.cliente }}</td>
+          <td class="px-4 py-3">{{ pedido.produto }}</td>
+          <td class="px-4 py-3">{{ pedido.quantidade }}</td>
+          <td class="px-4 py-3">{{ pedido.status }}</td>
+          <td class="px-4 py-3 flex justify-center gap-2">
+            <p-button  
+              label="Visualizar"
+              class="p-button-rounded p-button-text p-button-info hover:scale-110 transition-transform" 
+              (click)="onVisualizarPedido(pedido)">
+            </p-button>
+
+            <p-button 
+              label="Editar"
+              class="p-button-rounded p-button-text p-button-warning hover:scale-110 transition-transform" 
+              (click)="onAbrirEditarPedido(pedido)">
+            </p-button>
+
+            <p-button 
+              label="Deletar"
+              class="p-button-rounded p-button-text p-button-danger hover:scale-110 transition-transform" 
+              (click)="onDeletarPedido(pedido)">
+            </p-button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>

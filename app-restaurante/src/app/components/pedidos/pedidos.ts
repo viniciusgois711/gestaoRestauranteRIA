@@ -7,10 +7,12 @@ import { ButtonModule } from 'primeng/button';         // <p-button>
 import { InputTextModule } from 'primeng/inputtext';   // <input pInputText>
 import { InputNumberModule } from 'primeng/inputnumber'; // <p-inputNumber>
 import { FormsModule } from '@angular/forms';
+import { PedidosList } from './pedidos-list/pedidos-list';
+import { PedidosForm } from './pedidos-form/pedidos-form';
 
 @Component({
   selector: 'app-pedidos',
-  imports: [TableModule, DialogModule, ButtonModule, InputTextModule, InputNumberModule, FormsModule],
+  imports: [TableModule, DialogModule, ButtonModule, InputTextModule, InputNumberModule, FormsModule, PedidosList, PedidosForm],
   templateUrl: './pedidos.html',
   styleUrl: './pedidos.css'
 })
@@ -75,6 +77,7 @@ export class Pedidos implements OnInit {
   }
 
   deletarPedido(pedido:any){
+    console.log(this.visible)
     this.pedidos = this.pedidos.filter((p:any) => p.id !== pedido.id)
   }
 
