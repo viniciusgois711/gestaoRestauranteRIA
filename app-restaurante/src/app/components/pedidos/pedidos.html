@@ -11,84 +11,12 @@
     ></p-button>
   </div>
 
-  <!-- Modal -->
-  <p-dialog 
-    header="Gerenciar Pedido" 
-    [modal]="true" 
-    [(visible)]="visible" 
-    [style]="{ width: '30rem' }"
-    [draggable]="false"
-  >
-    <span class="text-gray-500 block mb-6">Preencha os dados do pedido.</span>
-
-    <div class="space-y-4">
-      <!-- Campo Cliente -->
-      <div class="flex items-center gap-3">
-        <label for="cliente" class="font-medium w-28 text-gray-700">Cliente</label>
-        <input 
-          pInputText 
-          id="cliente" 
-          [(ngModel)]="novoPedido.cliente" 
-          class="flex-1" 
-          autocomplete="off" 
-          [disabled]="visualizando" 
-        />
-      </div>
-
-      <!-- Campo Produto -->
-      <div class="flex items-center gap-3">
-        <label for="produto" class="font-medium w-28 text-gray-700">Produto</label>
-        <input 
-          pInputText 
-          id="produto" 
-          [(ngModel)]="novoPedido.produto" 
-          class="flex-1" 
-          autocomplete="off" 
-          [disabled]="visualizando" 
-        />
-      </div>
-
-      <!-- Campo Quantidade -->
-      <div class="flex items-center gap-3">
-        <label for="quantidade" class="font-medium w-28 text-gray-700">Quantidade</label>
-        <input 
-          pInputText 
-          id="quantidade" 
-          [(ngModel)]="novoPedido.quantidade" 
-          class="flex-1" 
-          autocomplete="off" 
-          [disabled]="visualizando" 
-        />
-      </div>
-
-      <!-- Campo Status -->
-      <div class="flex items-center gap-3">
-        <label for="status" class="font-medium w-28 text-gray-700">Status</label>
-        <input 
-          pInputText 
-          id="status" 
-          [(ngModel)]="novoPedido.status" 
-          class="flex-1" 
-          autocomplete="off" 
-          [disabled]="visualizando" 
-        />
-      </div>
-    </div>
-
-    <div class="flex justify-end gap-3 mt-6">
-      <p-button 
-        label="Cancelar" 
-        severity="secondary" 
-        (click)="visible = false"
-        class="!bg-gray-300 !text-gray-800 hover:!bg-gray-400 transition-all duration-200"
-      />
-      <p-button 
-        label="Salvar" 
-        (click)="postPutPedido()" 
-        class="!bg-green-500 hover:!bg-green-600 transition-all duration-200"
-      />
-    </div>
-  </p-dialog>
+  <app-pedidos-form
+    [pedidos]="pedidos"
+    [novoPedido]="novoPedido"
+    [(visible)]="visible"
+    [visualizando]="visualizando">
+  </app-pedidos-form>
 
   <app-pedidos-list 
     [pedidos]="pedidos"
