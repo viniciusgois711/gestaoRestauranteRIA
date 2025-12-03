@@ -8,6 +8,7 @@ import { ButtonModule } from 'primeng/button';         // <p-button>
 import { InputTextModule } from 'primeng/inputtext';   // <input pInputText>
 import { InputNumberModule } from 'primeng/inputnumber'; // <p-inputNumber>
 import { FormsModule } from '@angular/forms';
+import { Pedido } from '../../../models/pedido.model';
 
 @Component({
   selector: 'app-pedidos-list',
@@ -16,21 +17,21 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './pedidos-list.css'
 })
 export class PedidosList {
-  @Input() pedidos: any[] = [];
+  @Input() pedidos: Pedido[] = [];
 
-  @Output() visualizar = new EventEmitter<any>();
-  @Output() editar = new EventEmitter<any>();
-  @Output() deletar = new EventEmitter<any>();
+  @Output() visualizar = new EventEmitter<Pedido>();
+  @Output() editar = new EventEmitter<Pedido>();
+  @Output() deletar = new EventEmitter<Pedido>();
 
-  onVisualizarPedido(pedido: any) {
+  onVisualizarPedido(pedido: Pedido) {
     this.visualizar.emit(pedido);
   }
   
-  onAbrirEditarPedido(pedido: any) {
+  onAbrirEditarPedido(pedido: Pedido) {
     this.editar.emit(pedido);
   }
 
-  onDeletarPedido(pedido: any) {
+  onDeletarPedido(pedido: Pedido) {
     this.deletar.emit(pedido);
   }
 
