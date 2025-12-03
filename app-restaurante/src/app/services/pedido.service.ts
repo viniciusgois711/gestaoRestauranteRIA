@@ -12,7 +12,7 @@ export class PedidoService {
       { id: 3, cliente: 'Carlos', produto: 'Refrigerante', quantidade: 3, status: 'Entregue' },
     ];
 
-  private idCounter = 1;
+  private idCounter = 4;
 
   constructor() {}
 
