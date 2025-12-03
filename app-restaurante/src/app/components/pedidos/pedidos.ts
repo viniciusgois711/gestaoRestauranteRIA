@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { PedidosList } from './pedidos-list/pedidos-list';
 import { PedidosForm } from './pedidos-form/pedidos-form';
 import { Pedido } from '../../models/pedido.model';
+import { PedidoService } from '../../services/pedido.service';
 
 @Component({
   selector: 'app-pedidos',
@@ -34,40 +35,27 @@ export class Pedidos implements OnInit {
   visible: boolean = false
   visualizando: boolean = false
 
+  constructor(private pedidoService: PedidoService) {}
+
   ngOnInit() {
-    this.carregaPedidos()
+    this.carregaPedidos();
   }
 
-  carregaPedidos(){
-     this.pedidos = [
-      { id: 1, cliente: 'João', produto: 'Pizza', quantidade: 2, status: 'Entregue' },
-      { id: 2, cliente: 'Maria', produto: 'Hambúrguer', quantidade: 1, status: 'Preparando' },
-      { id: 3, cliente: 'Carlos', produto: 'Refrigerante', quantidade: 3, status: 'Entregue' },
-    ]
+  carregaPedidos() {
+    this.pedidos = this.pedidoService.listar();
   }
 
   postPutPedido() {
 
     this.visualizando = false
 
-    if (this.novoPedido.id !== 0) {
-      const index = this.pedidos.findIndex((p:Pedido) => p.id === this.novoPedido.id);
-      if (index !== -1) {
-        this.pedidos[index] = { ...this.novoPedido };
-      }
-    } 
-    else {
-      const novoId = this.pedidos.length > 0 ? this.pedidos[this.pedidos.length - 1].id + 1 : 1;
-      this.pedidos.push({ ...this.novoPedido, id: novoId });
+     if (this.novoPedido.id !== 0) {
+      this.pedidoService.atualizar(this.novoPedido);
+    } else {
+      this.pedidoService.inserir(this.novoPedido);
     }
 
-    this.novoPedido = {
-      id: 0,
-      cliente: '',
-      produto: '',
-      quantidade: 1,
-      status: 'Preparando'
-    };
+    this.resetarFormulario()
     this.visible = false; 
   }
 
@@ -77,19 +65,25 @@ export class Pedidos implements OnInit {
     this.visualizando = false
   }
 
-  deletarPedido(pedido:Pedido){
-    console.log(this.visible)
-    this.pedidos = this.pedidos.filter((p:Pedido) => p.id !== pedido.id)
+  deletarPedido(pedido: Pedido) {
+    this.pedidoService.remover(pedido.id);
+    this.carregaPedidos();
   }
+ 
 
   visualizarPedido(pedido:Pedido){
-    console.log('visualiza')
     this.novoPedido = {...pedido}
     this.visualizando = true
     this.visible = true
   }
 
-  abrirModal(){
+  abrirModal() {
+    this.resetarFormulario()
+    this.visible = true
+    this.visualizando = false
+  }
+
+  resetarFormulario() {
     this.novoPedido = {
       id: 0,
       cliente: '',
@@ -97,8 +91,6 @@ export class Pedidos implements OnInit {
       quantidade: 1,
       status: 'Preparando'
     };
-    this.visible = true
-    this.visualizando = false
   }
 
 }
