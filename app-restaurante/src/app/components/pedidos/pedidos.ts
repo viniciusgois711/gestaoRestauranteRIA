@@ -9,6 +9,7 @@ import { InputNumberModule } from 'primeng/inputnumber'; // <p-inputNumber>
 import { FormsModule } from '@angular/forms';
 import { PedidosList } from './pedidos-list/pedidos-list';
 import { PedidosForm } from './pedidos-form/pedidos-form';
+import { Pedido } from '../../models/pedido.model';
 
 @Component({
   selector: 'app-pedidos',
@@ -18,15 +19,15 @@ import { PedidosForm } from './pedidos-form/pedidos-form';
 })
 export class Pedidos implements OnInit {
 
-  pedidos: any = []  
+  pedidos: Pedido[] = [];  
   displayModal: boolean = false;
 
-  novoPedido = {
-    id: 0,
-    cliente: '',
-    produto: '',
-    quantidade: 1,
-    status: 'Preparando'
+  novoPedido: Pedido = {
+  id: 0,
+  cliente: '',
+  produto: '',
+  quantidade: 1,
+  status: 'Preparando'
   };
 
 
@@ -50,7 +51,7 @@ export class Pedidos implements OnInit {
     this.visualizando = false
 
     if (this.novoPedido.id !== 0) {
-      const index = this.pedidos.findIndex((p:any) => p.id === this.novoPedido.id);
+      const index = this.pedidos.findIndex((p:Pedido) => p.id === this.novoPedido.id);
       if (index !== -1) {
         this.pedidos[index] = { ...this.novoPedido };
       }
@@ -70,18 +71,18 @@ export class Pedidos implements OnInit {
     this.visible = false; 
   }
 
-  abrirEditarPedido(pedido:any){
+  abrirEditarPedido(pedido:Pedido){
     this.novoPedido = {...pedido}
     this.visible = true
     this.visualizando = false
   }
 
-  deletarPedido(pedido:any){
+  deletarPedido(pedido:Pedido){
     console.log(this.visible)
-    this.pedidos = this.pedidos.filter((p:any) => p.id !== pedido.id)
+    this.pedidos = this.pedidos.filter((p:Pedido) => p.id !== pedido.id)
   }
 
-  visualizarPedido(pedido:any){
+  visualizarPedido(pedido:Pedido){
     console.log('visualiza')
     this.novoPedido = {...pedido}
     this.visualizando = true

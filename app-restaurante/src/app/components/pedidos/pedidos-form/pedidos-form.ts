@@ -6,6 +6,7 @@ import { ButtonModule } from 'primeng/button';         // <p-button>
 import { InputTextModule } from 'primeng/inputtext';   // <input pInputText>
 import { InputNumberModule } from 'primeng/inputnumber'; // <p-inputNumber>
 import { FormsModule } from '@angular/forms';
+import { Pedido } from '../../../models/pedido.model';
 
 @Component({
   selector: 'app-pedidos-form',
@@ -15,8 +16,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class PedidosForm {
 
-  @Input() pedidos: any[] = [];
-  @Input() novoPedido: any = {
+  @Input() pedidos: Pedido[] = [];
+  @Input() novoPedido: Pedido = {
   id: 0,
   cliente: '',
   produto: '',
@@ -32,7 +33,7 @@ export class PedidosForm {
     this.visualizando = false
 
     if (this.novoPedido.id !== 0) {
-      const index = this.pedidos.findIndex((p:any) => p.id === this.novoPedido.id);
+      const index = this.pedidos.findIndex((p:Pedido) => p.id === this.novoPedido.id);
       if (index !== -1) {
         this.pedidos[index] = { ...this.novoPedido };
       }
