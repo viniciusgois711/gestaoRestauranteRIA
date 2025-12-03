@@ -29,9 +29,9 @@ export class Pedidos implements OnInit {
     status: 'Preparando'
   };
 
-  username = ''
-  visible = false
-  visualizando = false
+
+  visible: boolean = false
+  visualizando: boolean = false
 
   ngOnInit() {
     this.carregaPedidos()

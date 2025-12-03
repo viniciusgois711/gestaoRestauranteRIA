@@ -26,10 +26,6 @@ export class PedidosForm {
   @Input() visible: boolean = false;    
   @Input() visualizando: boolean = false;   
   @Output() visibleChange = new EventEmitter<boolean>();
- 
-
-
-  username = ''
 
   postPutPedido() {
 
