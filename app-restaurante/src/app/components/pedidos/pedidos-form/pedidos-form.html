@@ -10,7 +10,6 @@
     <span class="text-gray-500 block mb-6">Preencha os dados do pedido.</span>
 
     <div class="space-y-4">
-      <!-- Campo Cliente -->
       <div class="flex items-center gap-3">
         <label for="cliente" class="font-medium w-28 text-gray-700">Cliente</label>
         <input 
@@ -23,7 +22,6 @@
         />
       </div>
 
-      <!-- Campo Produto -->
       <div class="flex items-center gap-3">
         <label for="produto" class="font-medium w-28 text-gray-700">Produto</label>
         <input 
@@ -36,7 +34,6 @@
         />
       </div>
 
-      <!-- Campo Quantidade -->
       <div class="flex items-center gap-3">
         <label for="quantidade" class="font-medium w-28 text-gray-700">Quantidade</label>
         <input 
@@ -49,7 +46,6 @@
         />
       </div>
 
-      <!-- Campo Status -->
       <div class="flex items-center gap-3">
         <label for="status" class="font-medium w-28 text-gray-700">Status</label>
         <input 
@@ -67,7 +63,7 @@
       <p-button 
         label="Cancelar" 
         severity="secondary" 
-        (click)="visible = false"
+        (click)="voltarListagem()"
         class="!bg-gray-300 !text-gray-800 hover:!bg-gray-400 transition-all duration-200"
       />
       <p-button 

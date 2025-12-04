@@ -11,6 +11,8 @@ import { PedidosList } from './pedidos-list/pedidos-list';
 import { PedidosForm } from './pedidos-form/pedidos-form';
 import { Pedido } from '../../models/pedido.model';
 import { PedidoService } from '../../services/pedido.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-pedidos',
@@ -35,7 +37,7 @@ export class Pedidos implements OnInit {
   visible: boolean = false
   visualizando: boolean = false
 
-  constructor(private pedidoService: PedidoService) {}
+  constructor(private pedidoService: PedidoService, private router: Router) {}
 
   ngOnInit() {
     this.carregaPedidos();
@@ -60,9 +62,7 @@ export class Pedidos implements OnInit {
   }
 
   abrirEditarPedido(pedido:Pedido){
-    this.novoPedido = {...pedido}
-    this.visible = true
-    this.visualizando = false
+    this.router.navigate(['/pedidos-form', pedido.id])
   }
 
   deletarPedido(pedido: Pedido) {
@@ -72,12 +72,11 @@ export class Pedidos implements OnInit {
  
 
   visualizarPedido(pedido:Pedido){
-    this.novoPedido = {...pedido}
-    this.visualizando = true
-    this.visible = true
+    this.router.navigate(['/pedidos-form/visualizar', pedido.id])
   }
 
   abrirModal() {
+    this.router.navigate(['/pedidos-form'])
     this.resetarFormulario()
     this.visible = true
     this.visualizando = false
