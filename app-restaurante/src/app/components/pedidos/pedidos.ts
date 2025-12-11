@@ -12,11 +12,13 @@ import { PedidosForm } from './pedidos-form/pedidos-form';
 import { Pedido } from '../../models/pedido.model';
 import { PedidoService } from '../../services/pedido.service';
 import { Router } from '@angular/router';
-
+import { Observable } from 'rxjs';
+import { AsyncPipe } from '@angular/common'
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-pedidos',
-  imports: [TableModule, DialogModule, ButtonModule, InputTextModule, InputNumberModule, FormsModule, PedidosList, PedidosForm],
+  imports: [AsyncPipe, TableModule, DialogModule, ButtonModule, InputTextModule, InputNumberModule, FormsModule, PedidosList, PedidosForm],
   templateUrl: './pedidos.html',
   styleUrl: './pedidos.css'
 })
@@ -32,19 +34,26 @@ export class Pedidos implements OnInit {
   quantidade: 1,
   status: 'Preparando'
   };
+  pedidos$: Observable<Pedido[]>;
 
 
   visible: boolean = false
   visualizando: boolean = false
 
-  constructor(private pedidoService: PedidoService, private router: Router) {}
+  constructor(private pedidoService: PedidoService, private router: Router) {
+    this.pedidos$ = this.pedidoService.listar();
+    console.log('aqui')
+    this.pedidos$ = this.pedidoService.listar().pipe(
+      tap(data => console.log('Dados recebidos:', data))
+    );
+  }
 
   ngOnInit() {
     this.carregaPedidos();
   }
 
   carregaPedidos() {
-    this.pedidos = this.pedidoService.listar();
+    this.pedidos$ = this.pedidoService.listar();
   }
 
   postPutPedido() {

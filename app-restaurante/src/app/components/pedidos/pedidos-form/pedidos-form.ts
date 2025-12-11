@@ -35,7 +35,11 @@ export class PedidosForm implements OnInit {
     this.activatedRoute.paramMap.subscribe(params => {
       const id = params.get('id')
       if(id){
-        this.novoPedido = this.pedidoService.detalhar(+id) || this.novoPedido
+        this.pedidoService.detalhar(+id).subscribe(pedido => {
+          if (pedido) {
+            this.novoPedido = pedido;
+          }
+        });
         this.activatedRoute.url.subscribe(segments => {
           this.visualizando = segments.some(segment => segment.path === 'visualizar');
         });

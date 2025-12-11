@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { Pedido } from '../models/pedido.model';
 
 @Injectable({
@@ -6,37 +8,29 @@ import { Pedido } from '../models/pedido.model';
 })
 export class PedidoService {
 
-  private pedidos: Pedido[] = [
-      { id: 1, cliente: 'João', produto: 'Pizza', quantidade: 2, status: 'Entregue' },
-      { id: 2, cliente: 'Maria', produto: 'Hambúrguer', quantidade: 1, status: 'Preparando' },
-      { id: 3, cliente: 'Carlos', produto: 'Refrigerante', quantidade: 3, status: 'Entregue' },
-    ];
+  // private readonly baseUrl = 'http://localhost:3000/pedidos';
+  private readonly baseUrl = 'https://jubilant-waddle-94w7v99jpwrfv57-3000.app.github.dev/pedidos';
 
-  private idCounter = 4;
+  constructor(private http: HttpClient) {}
 
-  constructor() {}
-
-  listar(): Pedido[] {
-    return this.pedidos;
+  listar(): Observable<Pedido[]> {
+    console.log('listaando')
+    return this.http.get<Pedido[]>(this.baseUrl);
   }
 
-  detalhar(id: number): Pedido | undefined {
-    return this.pedidos.find(p => p.id === id);
+  detalhar(id: number): Observable<Pedido> {
+    return this.http.get<Pedido>(`${this.baseUrl}/${id}`);
   }
 
-  inserir(pedido: Pedido): void {
-    pedido.id = this.idCounter++;
-    this.pedidos.push(pedido);
+  inserir(pedido: Pedido): Observable<Pedido> {
+    return this.http.post<Pedido>(this.baseUrl, pedido);
   }
 
-  atualizar(pedidoAtualizado: Pedido): void {
-    const index = this.pedidos.findIndex(p => p.id === pedidoAtualizado.id);
-    if (index !== -1) {
-      this.pedidos[index] = pedidoAtualizado;
-    }
+  atualizar(pedidoAtualizado: Pedido): Observable<Pedido> {
+    return this.http.put<Pedido>(`${this.baseUrl}/${pedidoAtualizado.id}`, pedidoAtualizado);
   }
 
-  remover(id: number): void {
-    this.pedidos = this.pedidos.filter(p => p.id !== id);
+  remover(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 }

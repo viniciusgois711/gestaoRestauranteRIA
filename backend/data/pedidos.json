@@ -1,0 +1,5 @@
+[
+  { "id": 1, "cliente": "João", "produto": "Pizza", "quantidade": 2, "status": "Entregue" },
+  { "id": 2, "cliente": "Maria", "produto": "Hambúrguer", "quantidade": 1, "status": "Preparando" },
+  { "id": 3, "cliente": "Carlos", "produto": "Refrigerante", "quantidade": 3, "status": "Entregue" }
+]
