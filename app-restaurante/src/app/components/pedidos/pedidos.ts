@@ -12,11 +12,13 @@ import { PedidosForm } from './pedidos-form/pedidos-form';
 import { Pedido } from '../../models/pedido.model';
 import { PedidoService } from '../../services/pedido.service';
 import { Router } from '@angular/router';
-
+import { Observable } from 'rxjs';
+import { AsyncPipe } from '@angular/common'
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-pedidos',
-  imports: [TableModule, DialogModule, ButtonModule, InputTextModule, InputNumberModule, FormsModule, PedidosList, PedidosForm],
+  imports: [AsyncPipe, TableModule, DialogModule, ButtonModule, InputTextModule, InputNumberModule, FormsModule, PedidosList, PedidosForm],
   templateUrl: './pedidos.html',
   styleUrl: './pedidos.css'
 })
@@ -32,33 +34,52 @@ export class Pedidos implements OnInit {
   quantidade: 1,
   status: 'Preparando'
   };
+  // pedidos$: Observable<Pedido[]>;
 
 
   visible: boolean = false
   visualizando: boolean = false
 
-  constructor(private pedidoService: PedidoService, private router: Router) {}
+  constructor(private pedidoService: PedidoService, private router: Router) {
+  }
 
   ngOnInit() {
     this.carregaPedidos();
   }
 
   carregaPedidos() {
-    this.pedidos = this.pedidoService.listar();
+    this.pedidoService.listar().subscribe({
+      next: (res) => {
+        this.pedidos = res;
+      },
+      error: (err) => {
+        console.error('Erro ao buscar pedidos', err);
+      }
+    });
   }
 
   postPutPedido() {
 
     this.visualizando = false
+    console.log('postput')
 
      if (this.novoPedido.id !== 0) {
-      this.pedidoService.atualizar(this.novoPedido);
+      this.pedidoService.atualizar(this.novoPedido).subscribe({
+        next: () => this.carregaPedidos(),
+        error: (err) => console.error(err)
+      });
     } else {
-      this.pedidoService.inserir(this.novoPedido);
+      // this.pedidoService.inserir(this.novoPedido);
+      console.log('inserir')
+      this.pedidoService.inserir(this.novoPedido).subscribe({
+        next: () => this.carregaPedidos(),
+        error: (err) => console.error(err)
+      });
     }
 
     this.resetarFormulario()
     this.visible = false; 
+    this.carregaPedidos()
   }
 
   abrirEditarPedido(pedido:Pedido){
@@ -66,8 +87,10 @@ export class Pedidos implements OnInit {
   }
 
   deletarPedido(pedido: Pedido) {
-    this.pedidoService.remover(pedido.id);
-    this.carregaPedidos();
+    this.pedidoService.remover(pedido.id).subscribe({
+      next: () => this.carregaPedidos(),
+      error: (err) => console.error(err)
+    });
   }
  
 
