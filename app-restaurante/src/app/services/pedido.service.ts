@@ -8,8 +8,8 @@ import { Pedido } from '../models/pedido.model';
 })
 export class PedidoService {
 
-  // private readonly baseUrl = 'http://localhost:3000/pedidos';
-  private readonly baseUrl = 'https://jubilant-waddle-94w7v99jpwrfv57-3000.app.github.dev/pedidos';
+  private readonly baseUrl = 'http://localhost:3000/pedidos';
+  // private readonly baseUrl = 'https://jubilant-waddle-94w7v99jpwrfv57-3000.app.github.dev/pedidos';
 
   constructor(private http: HttpClient) {}
 
@@ -23,6 +23,7 @@ export class PedidoService {
   }
 
   inserir(pedido: Pedido): Observable<Pedido> {
+    console.log(pedido)
     return this.http.post<Pedido>(this.baseUrl, pedido);
   }
 

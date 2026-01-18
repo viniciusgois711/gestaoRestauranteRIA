@@ -29,7 +29,7 @@ async function writeData(data) {
 }
 
 app.get('/pedidos', async (req, res) => {
-    console.log('passou')
+    console.log('get')
   try {
     const pedidos = await readData();
     res.json(pedidos);
@@ -51,6 +51,7 @@ app.get('/pedidos/:id', async (req, res) => {
 });
 
 app.post('/pedidos', async (req, res) => {
+  console.log('post')
   try {
     const novo = req.body;
     if (!novo || !novo.cliente || !novo.produto || typeof novo.quantidade !== 'number') {

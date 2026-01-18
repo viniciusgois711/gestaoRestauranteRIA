@@ -34,18 +34,13 @@ export class Pedidos implements OnInit {
   quantidade: 1,
   status: 'Preparando'
   };
-  pedidos$: Observable<Pedido[]>;
+  // pedidos$: Observable<Pedido[]>;
 
 
   visible: boolean = false
   visualizando: boolean = false
 
   constructor(private pedidoService: PedidoService, private router: Router) {
-    this.pedidos$ = this.pedidoService.listar();
-    console.log('aqui')
-    this.pedidos$ = this.pedidoService.listar().pipe(
-      tap(data => console.log('Dados recebidos:', data))
-    );
   }
 
   ngOnInit() {
@@ -53,21 +48,38 @@ export class Pedidos implements OnInit {
   }
 
   carregaPedidos() {
-    this.pedidos$ = this.pedidoService.listar();
+    this.pedidoService.listar().subscribe({
+      next: (res) => {
+        this.pedidos = res;
+      },
+      error: (err) => {
+        console.error('Erro ao buscar pedidos', err);
+      }
+    });
   }
 
   postPutPedido() {
 
     this.visualizando = false
+    console.log('postput')
 
      if (this.novoPedido.id !== 0) {
-      this.pedidoService.atualizar(this.novoPedido);
+      this.pedidoService.atualizar(this.novoPedido).subscribe({
+        next: () => this.carregaPedidos(),
+        error: (err) => console.error(err)
+      });
     } else {
-      this.pedidoService.inserir(this.novoPedido);
+      // this.pedidoService.inserir(this.novoPedido);
+      console.log('inserir')
+      this.pedidoService.inserir(this.novoPedido).subscribe({
+        next: () => this.carregaPedidos(),
+        error: (err) => console.error(err)
+      });
     }
 
     this.resetarFormulario()
     this.visible = false; 
+    this.carregaPedidos()
   }
 
   abrirEditarPedido(pedido:Pedido){
@@ -75,8 +87,10 @@ export class Pedidos implements OnInit {
   }
 
   deletarPedido(pedido: Pedido) {
-    this.pedidoService.remover(pedido.id);
-    this.carregaPedidos();
+    this.pedidoService.remover(pedido.id).subscribe({
+      next: () => this.carregaPedidos(),
+      error: (err) => console.error(err)
+    });
   }
  
 

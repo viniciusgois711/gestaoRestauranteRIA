@@ -36,12 +36,10 @@
 
       <div class="flex items-center gap-3">
         <label for="quantidade" class="font-medium w-28 text-gray-700">Quantidade</label>
-        <input 
-          pInputText 
+        <p-inputNumber 
           id="quantidade" 
           [(ngModel)]="novoPedido.quantidade" 
           class="flex-1" 
-          autocomplete="off" 
           [disabled]="visualizando" 
         />
       </div>
@@ -68,7 +66,7 @@
       />
       <p-button 
         label="Salvar" 
-        (click)="postPutPedido()" 
+        (onClick)="postPutPedido()" 
         class="!bg-green-500 hover:!bg-green-600 transition-all duration-200"
       />
     </div>

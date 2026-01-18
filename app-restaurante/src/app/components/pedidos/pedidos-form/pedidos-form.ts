@@ -49,14 +49,21 @@ export class PedidosForm implements OnInit {
   }
 
   postPutPedido() {
-    
+    console.log('pedidos-form')
     if (this.novoPedido.id !== 0) {
-      this.pedidoService.atualizar(this.novoPedido);
+      console.log('atualizar')
+      this.pedidoService.atualizar(this.novoPedido).subscribe({
+        next: () => this.voltarListagem(),
+        error: (err) => console.error(err)
+      });
     } else {
-      this.pedidoService.inserir(this.novoPedido);
-    }
 
-    this.voltarListagem()
+      console.log('inserir')
+      this.pedidoService.inserir(this.novoPedido).subscribe({
+        next: () => this.voltarListagem(),
+        error: (err) => console.error(err)
+      });
+    }
   }
 
   voltarListagem(){
