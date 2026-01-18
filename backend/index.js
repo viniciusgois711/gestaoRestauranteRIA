@@ -2,14 +2,23 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs').promises;
 const path = require('path');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
 const app = express();
 app.use(cors({
   origin: '*',
   methods: 'GET,POST,PUT,DELETE',
-  allowedHeaders: 'Content-Type'
+  allowedHeaders: 'Content-Type,Authorization'
 }));
 app.use(express.json());
+
+const SECRET_KEY = 'sua-chave-secreta'; // Em produção, usar variável de ambiente
+
+// Mock users
+const users = [
+  { username: 'admin', password: bcrypt.hashSync('admin123', 10) }
+];
 
 const DATA_PATH = path.join(__dirname, 'data', 'pedidos.json');
 
@@ -28,7 +37,45 @@ async function writeData(data) {
   await fs.writeFile(DATA_PATH, JSON.stringify(data, null, 2), 'utf8');
 }
 
-app.get('/pedidos', async (req, res) => {
+// Middleware para verificar token
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) return res.status(401).json({ error: 'Token não fornecido' });
+  jwt.verify(token, SECRET_KEY, (err, user) => {
+    if (err) return res.status(403).json({ error: 'Token inválido' });
+    req.user = user;
+    next();
+  });
+}
+
+// Endpoint de login
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+  const user = users.find(u => u.username === username);
+  if (!user || !bcrypt.compareSync(password, user.password)) {
+    return res.status(401).json({ error: 'Credenciais inválidas' });
+  }
+  const token = jwt.sign({ username }, SECRET_KEY, { expiresIn: '1h' });
+  res.json({ token });
+});
+
+async function readData() {
+  try {
+    const raw = await fs.readFile(DATA_PATH, 'utf8');
+    return JSON.parse(raw);
+  } catch (err) {
+    if (err.code === 'ENOENT') return [];
+    throw err;
+  }
+}
+
+async function writeData(data) {
+  await fs.mkdir(path.dirname(DATA_PATH), { recursive: true });
+  await fs.writeFile(DATA_PATH, JSON.stringify(data, null, 2), 'utf8');
+}
+
+app.get('/pedidos', authenticateToken, async (req, res) => {
     console.log('get')
   try {
     const pedidos = await readData();
@@ -38,7 +85,7 @@ app.get('/pedidos', async (req, res) => {
   }
 });
 
-app.get('/pedidos/:id', async (req, res) => {
+app.get('/pedidos/:id', authenticateToken, async (req, res) => {
   try {
     const id = Number(req.params.id);
     const pedidos = await readData();
@@ -50,7 +97,7 @@ app.get('/pedidos/:id', async (req, res) => {
   }
 });
 
-app.post('/pedidos', async (req, res) => {
+app.post('/pedidos', authenticateToken, async (req, res) => {
   console.log('post')
   try {
     const novo = req.body;
@@ -68,7 +115,7 @@ app.post('/pedidos', async (req, res) => {
   }
 });
 
-app.put('/pedidos/:id', async (req, res) => {
+app.put('/pedidos/:id', authenticateToken, async (req, res) => {
   try {
     const id = Number(req.params.id);
     const atualizado = req.body;
@@ -84,7 +131,7 @@ app.put('/pedidos/:id', async (req, res) => {
   }
 });
 
-app.delete('/pedidos/:id', async (req, res) => {
+app.delete('/pedidos/:id', authenticateToken, async (req, res) => {
   try {
     const id = Number(req.params.id);
     const pedidos = await readData();
