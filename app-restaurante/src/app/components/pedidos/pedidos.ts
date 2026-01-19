@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
@@ -40,7 +40,7 @@ export class Pedidos implements OnInit {
   visible: boolean = false
   visualizando: boolean = false
 
-  constructor(private pedidoService: PedidoService, private router: Router) {
+  constructor(private pedidoService: PedidoService, private router: Router, private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -51,6 +51,7 @@ export class Pedidos implements OnInit {
     this.pedidoService.listar().subscribe({
       next: (res) => {
         this.pedidos = res;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Erro ao buscar pedidos', err);
