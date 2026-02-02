@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
@@ -17,11 +17,11 @@ import { Pedido } from '../../../models/pedido.model';
   styleUrl: './pedidos-list.css'
 })
 export class PedidosList {
-  @Input() pedidos: Pedido[] = [];
+  pedidos = input<Pedido[]>([]);
 
-  @Output() visualizar = new EventEmitter<Pedido>();
-  @Output() editar = new EventEmitter<Pedido>();
-  @Output() deletar = new EventEmitter<Pedido>();
+  visualizar = output<Pedido>();
+  editar = output<Pedido>();
+  deletar = output<Pedido>();
 
   onVisualizarPedido(pedido: Pedido) {
     this.visualizar.emit(pedido);

@@ -11,5 +11,5 @@
     </div>
     <button type="submit" [disabled]="loginForm.invalid">Entrar</button>
   </form>
-  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+  <p *ngIf="errorMessage()" class="error">{{ errorMessage() }}</p>
 </div>

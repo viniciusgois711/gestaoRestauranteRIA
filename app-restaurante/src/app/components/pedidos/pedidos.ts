@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, signal, inject, effect } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
@@ -12,46 +12,38 @@ import { PedidosForm } from './pedidos-form/pedidos-form';
 import { Pedido } from '../../models/pedido.model';
 import { PedidoService } from '../../services/pedido.service';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { AsyncPipe } from '@angular/common'
-import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-pedidos',
-  imports: [AsyncPipe, TableModule, DialogModule, ButtonModule, InputTextModule, InputNumberModule, FormsModule, PedidosList, PedidosForm],
+  imports: [TableModule, DialogModule, ButtonModule, InputTextModule, InputNumberModule, FormsModule, PedidosList, PedidosForm],
   templateUrl: './pedidos.html',
   styleUrl: './pedidos.css'
 })
-export class Pedidos implements OnInit {
+export class Pedidos {
 
-  pedidos: Pedido[] = [];  
-  displayModal: boolean = false;
+  private pedidoService = inject(PedidoService);
+  private router = inject(Router);
 
-  novoPedido: Pedido = {
-  id: 0,
-  cliente: '',
-  produto: '',
-  quantidade: 1,
-  status: 'Preparando'
-  };
-  // pedidos$: Observable<Pedido[]>;
+  pedidos = signal<Pedido[]>([]);
+  visible = signal<boolean>(false);
+  visualizando = signal<boolean>(false);
 
+  novoPedido = signal<Pedido>({
+    id: 0,
+    cliente: '',
+    produto: '',
+    quantidade: 1,
+    status: 'Preparando'
+  });
 
-  visible: boolean = false
-  visualizando: boolean = false
-
-  constructor(private pedidoService: PedidoService, private router: Router, private cdr: ChangeDetectorRef) {
-  }
-
-  ngOnInit() {
+  constructor() {
     this.carregaPedidos();
   }
 
   carregaPedidos() {
     this.pedidoService.listar().subscribe({
       next: (res) => {
-        this.pedidos = res;
-        this.cdr.detectChanges();
+        this.pedidos.set(res);
       },
       error: (err) => {
         console.error('Erro ao buscar pedidos', err);
@@ -60,31 +52,25 @@ export class Pedidos implements OnInit {
   }
 
   postPutPedido() {
-
-    this.visualizando = false
-    console.log('postput')
-
-     if (this.novoPedido.id !== 0) {
-      this.pedidoService.atualizar(this.novoPedido).subscribe({
+    this.visualizando.set(false);
+    const pedido = this.novoPedido();
+    if (pedido.id !== 0) {
+      this.pedidoService.atualizar(pedido).subscribe({
         next: () => this.carregaPedidos(),
         error: (err) => console.error(err)
       });
     } else {
-      // this.pedidoService.inserir(this.novoPedido);
-      console.log('inserir')
-      this.pedidoService.inserir(this.novoPedido).subscribe({
+      this.pedidoService.inserir(pedido).subscribe({
         next: () => this.carregaPedidos(),
         error: (err) => console.error(err)
       });
     }
-
-    this.resetarFormulario()
-    this.visible = false; 
-    this.carregaPedidos()
+    this.resetarFormulario();
+    this.visible.set(false);
   }
 
-  abrirEditarPedido(pedido:Pedido){
-    this.router.navigate(['/pedidos-form', pedido.id])
+  abrirEditarPedido(pedido: Pedido) {
+    this.router.navigate(['/pedidos-form', pedido.id]);
   }
 
   deletarPedido(pedido: Pedido) {
@@ -93,27 +79,26 @@ export class Pedidos implements OnInit {
       error: (err) => console.error(err)
     });
   }
- 
 
-  visualizarPedido(pedido:Pedido){
-    this.router.navigate(['/pedidos-form/visualizar', pedido.id])
+  visualizarPedido(pedido: Pedido) {
+    this.router.navigate(['/pedidos-form/visualizar', pedido.id]);
   }
 
   abrirModal() {
-    this.router.navigate(['/pedidos-form'])
-    this.resetarFormulario()
-    this.visible = true
-    this.visualizando = false
+    this.router.navigate(['/pedidos-form']);
+    this.resetarFormulario();
+    this.visible.set(true);
+    this.visualizando.set(false);
   }
 
   resetarFormulario() {
-    this.novoPedido = {
+    this.novoPedido.set({
       id: 0,
       cliente: '',
       produto: '',
       quantidade: 1,
       status: 'Preparando'
-    };
+    });
   }
 
 }

@@ -11,15 +11,8 @@
     ></p-button>
   </div>
 
-  <!-- <app-pedidos-form
-    [pedidos]="pedidos"
-    [novoPedido]="novoPedido"
-    [(visible)]="visible"
-    [visualizando]="visualizando">
-  </app-pedidos-form> -->
-
   <app-pedidos-list 
-    [pedidos]="pedidos"
+    [pedidos]="pedidos()"
     (visualizar)="visualizarPedido($event)"
     (editar)="abrirEditarPedido($event)"
     (deletar)="deletarPedido($event)">
