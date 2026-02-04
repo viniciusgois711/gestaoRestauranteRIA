@@ -7,7 +7,7 @@ import { isPlatformBrowser } from '@angular/common';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/login';
+  private apiUrl = 'https://literate-goldfish-5p5g6qqxjvgh76x4-3000.app.github.dev/login';
 
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }
 

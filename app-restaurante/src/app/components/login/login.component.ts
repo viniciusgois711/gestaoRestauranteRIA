@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
@@ -11,14 +11,14 @@ import { CommonModule } from '@angular/common';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  loginForm: FormGroup;
-  errorMessage: string = '';
+  private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router
-  ) {
+  loginForm: FormGroup;
+  errorMessage = signal<string>('');
+
+  constructor() {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -33,7 +33,7 @@ export class LoginComponent {
           this.router.navigate(['/']);
         },
         error: (err) => {
-          this.errorMessage = 'Credenciais inválidas';
+          this.errorMessage.set('Credenciais inválidas');
         }
       });
     }

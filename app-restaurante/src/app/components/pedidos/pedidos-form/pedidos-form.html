@@ -9,16 +9,16 @@
   >
     <span class="text-gray-500 block mb-6">Preencha os dados do pedido.</span>
 
-    <div class="space-y-4">
+    <form [formGroup]="form" class="space-y-4">
       <div class="flex items-center gap-3">
         <label for="cliente" class="font-medium w-28 text-gray-700">Cliente</label>
         <input 
           pInputText 
           id="cliente" 
-          [(ngModel)]="novoPedido.cliente" 
+          formControlName="cliente"
           class="flex-1" 
           autocomplete="off" 
-          [disabled]="visualizando" 
+          [attr.disabled]="visualizando() ? '' : null" 
         />
       </div>
 
@@ -27,10 +27,10 @@
         <input 
           pInputText 
           id="produto" 
-          [(ngModel)]="novoPedido.produto" 
+          formControlName="produto"
           class="flex-1" 
           autocomplete="off" 
-          [disabled]="visualizando" 
+          [attr.disabled]="visualizando() ? '' : null" 
         />
       </div>
 
@@ -38,9 +38,9 @@
         <label for="quantidade" class="font-medium w-28 text-gray-700">Quantidade</label>
         <p-inputNumber 
           id="quantidade" 
-          [(ngModel)]="novoPedido.quantidade" 
+          formControlName="quantidade"
           class="flex-1" 
-          [disabled]="visualizando" 
+          [attr.disabled]="visualizando() ? '' : null" 
         />
       </div>
 
@@ -49,13 +49,13 @@
         <input 
           pInputText 
           id="status" 
-          [(ngModel)]="novoPedido.status" 
+          formControlName="status"
           class="flex-1" 
           autocomplete="off" 
-          [disabled]="visualizando" 
+          [attr.disabled]="visualizando() ? '' : null" 
         />
       </div>
-    </div>
+    </form>
 
     <div class="flex justify-end gap-3 mt-6">
       <p-button 
